@@ -1,0 +1,8 @@
+# Protect Sensitive Files and Directories (Phase 14 Security)
+
+<FilesMatch "^\.env|setup\.lock|installer-token\.hash">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+RedirectMatch 404 ^/(storage|app|config|vendor|scripts|database)/
