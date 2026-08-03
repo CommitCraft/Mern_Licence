@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ShieldAlert } from 'lucide-react';
 
@@ -24,8 +24,8 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({ permission, pe
         <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-4">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-100 mb-2">403 - Access Denied</h1>
-        <p className="text-slate-400 max-w-md mb-6">
+        <h1 className="text-2xl font-bold text-gray-600 mb-2">403 - Access Denied</h1>
+        <p className="text-gray-600 max-w-md mb-6">
           You do not have the required permissions to view this module. Please contact your system administrator if you require access.
         </p>
       </div>

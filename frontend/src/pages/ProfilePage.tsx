@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../config/api';
 import { KeyRound, CheckCircle2, AlertCircle, LogOut } from 'lucide-react';
@@ -61,30 +61,30 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h1 className="text-2xl font-bold text-slate-100 tracking-tight">My Profile & Security</h1>
-        <p className="text-xs text-slate-400 mt-1">Manage your account details, change password, and control active sessions.</p>
+        <h1 className="text-xl font-bold text-gray-900 tracking-tight">My Profile & Security</h1>
+        <p className="text-xs text-gray-500 mt-1">Manage your account details, change password, and control active sessions.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
           <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold text-xl mx-auto mb-3">
+            <div className="w-16 h-16 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center font-bold text-xl mx-auto mb-3">
               {user?.fullName ? user.fullName.charAt(0).toUpperCase() : 'A'}
             </div>
-            <h2 className="text-base font-bold text-slate-100">{user?.fullName}</h2>
-            <p className="text-xs text-slate-400">@{user?.username}</p>
+            <h2 className="text-base font-bold text-gray-900">{user?.fullName}</h2>
+            <p className="text-xs text-gray-500">@{user?.username}</p>
           </div>
 
-          <div className="border-t border-slate-800 pt-4 space-y-3 text-xs">
+          <div className="border-t border-gray-200 pt-4 space-y-3 text-xs">
             <div>
-              <span className="text-slate-500 block">Email Address</span>
-              <span className="font-semibold text-slate-200">{user?.email}</span>
+              <span className="text-gray-400 block">Email Address</span>
+              <span className="font-semibold text-gray-800">{user?.email}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Assigned Roles</span>
+              <span className="text-gray-400 block">Assigned Roles</span>
               <div className="flex flex-wrap gap-1 mt-1">
                 {user?.roles?.map((r) => (
-                  <span key={r} className="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold text-[10px]">
+                  <span key={r} className="px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 font-semibold text-[10px]">
                     {r}
                   </span>
                 ))}
@@ -93,9 +93,9 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="md:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-          <h2 className="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-            <KeyRound className="w-4 h-4 text-indigo-400" />
+        <div className="md:col-span-2 bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+          <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2 border-b border-gray-200 pb-3">
+            <KeyRound className="w-4 h-4 text-indigo-600" />
             Change Password
           </h2>
 
@@ -103,7 +103,7 @@ export const ProfilePage: React.FC = () => {
             <div
               className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
                 passwordMsg.type === 'success'
-                  ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'
+                  ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-600'
                   : 'bg-red-500/10 border border-red-500/30 text-red-400'
               }`}
             >
@@ -114,35 +114,35 @@ export const ProfilePage: React.FC = () => {
 
           <form onSubmit={handleChangePassword} className="space-y-4 text-xs">
             <div>
-              <label className="block text-slate-400 mb-1">Current Password *</label>
+              <label className="block text-gray-500 mb-1">Current Password *</label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-gray-900"
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-slate-400 mb-1">New Password *</label>
+                <label className="block text-gray-500 mb-1">New Password *</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-gray-900"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Confirm New Password *</label>
+                <label className="block text-gray-500 mb-1">Confirm New Password *</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-gray-900"
                   required
                 />
               </div>
@@ -152,7 +152,7 @@ export const ProfilePage: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg shadow-indigo-600/30"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg shadow-indigo-200"
               >
                 {submitting ? 'Updating...' : 'Update Password'}
               </button>
@@ -160,7 +160,7 @@ export const ProfilePage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleRevokeAllSessions}
-                className="inline-flex items-center gap-1.5 text-xs text-rose-400 hover:text-rose-300"
+                className="inline-flex items-center gap-1.5 text-xs text-rose-600 hover:text-rose-300"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 Revoke All Other Sessions

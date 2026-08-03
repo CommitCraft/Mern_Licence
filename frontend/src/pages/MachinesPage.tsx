@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { FeatureGuard } from '../modules/licensing/components/FeatureGuard';
 import { Cpu, CheckCircle, AlertTriangle } from 'lucide-react';
 

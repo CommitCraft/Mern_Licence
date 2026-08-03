@@ -43,7 +43,7 @@ export const AppLayout: React.FC = () => {
           </div>
         </div>
 
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           {navItems.map((item) => {
             // Filter menu items by required licence feature (Phase 20)
             if (item.requiredLicenceFeature && !features[item.requiredLicenceFeature]) {
@@ -57,15 +57,16 @@ export const AppLayout: React.FC = () => {
                 style={({ isActive }) => ({
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '0.75rem 1rem',
-                  borderRadius: '10px',
-                  color: isActive ? '#ffffff' : 'var(--text-muted)',
-                  background: isActive ? 'var(--primary-glow)' : 'transparent',
-                  border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent',
+                  gap: '0.6rem',
+                  padding: '0.45rem 0.75rem',
+                  borderRadius: '8px',
+                  fontSize: '0.85rem',
+                  color: isActive ? 'var(--primary-600)' : 'var(--text-muted)',
+                  background: isActive ? 'var(--bg-card-hover)' : 'transparent',
+                  border: isActive ? '1px solid var(--border-color)' : '1px solid transparent',
                   textDecoration: 'none',
                   fontWeight: isActive ? 600 : 400,
-                  transition: 'all 0.2s ease'
+                  transition: 'all 0.15s ease'
                 })}
               >
                 {item.icon}
