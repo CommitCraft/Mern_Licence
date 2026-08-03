@@ -49,6 +49,7 @@
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [📘 Client API Integration Guide (INTEGRATION_GUIDE.md)](INTEGRATION_GUIDE.md)
 - [How the System Works](#how-the-system-works)
 - [Quick Start](#quick-start)
 - [Step 1 — Generate a Licence Key (Admin Panel)](#step-1--generate-a-licence-key-admin-panel)
