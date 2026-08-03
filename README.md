@@ -1,6 +1,48 @@
-# 🔐 SaralLicence — Software Licence Integration Guide
+# 🔐 SaralLicence — Software Licence Management System
 
-> Complete step-by-step guide to integrate the SaralLicence activation system into any of your software projects.
+<div align="center">
+
+> **This License Management System allows any software to be securely controlled through a License Key,**
+> **enabling centralized activation, validation, feature control, subscription management,**
+> **and remote enable/disable capabilities from a single Admin Dashboard.**
+
+![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)
+
+</div>
+
+---
+
+## ✨ Key Capabilities
+
+| Feature | Description |
+|---------|-------------|
+| 🔑 **License Key Control** | Securely control any software through unique, cryptographically signed licence keys |
+| 🚀 **Centralized Activation** | Activate software on specific machines with hardware fingerprinting |
+| ✅ **Online Validation** | Periodically validate licences against the central server |
+| 🎛️ **Feature Flag Control** | Enable/disable specific software features per licence type |
+| 📅 **Subscription Management** | Support for `TRIAL`, `ANNUAL`, `ENTERPRISE`, and `LIFETIME` plans |
+| 🔴 **Remote Enable/Disable** | Instantly suspend or revoke any licence from the Admin Dashboard |
+| 🖥️ **Multi-Platform Integration** | Works with React, Node.js, Python, PHP — any software stack |
+| 🌐 **Offline Grace Period** | 7-day offline grace period with tamper-proof clock rollback detection |
+| 📊 **Audit Logs** | Full server-side logging of all activation and validation attempts |
+| 🔒 **Ed25519 Cryptography** | Licence certificates signed with industry-standard asymmetric keys |
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 18 + TypeScript + Vite + TailwindCSS |
+| **Backend** | Node.js + Express + TypeScript |
+| **Database** | MySQL 8 via Sequelize ORM |
+| **Auth** | JWT (Access + Refresh Tokens) + HTTP-only Cookies |
+| **Security** | Helmet, CORS, Ed25519 Key Signing, Rate Limiting |
+| **Dev Tools** | ts-node, nodemon, bcryptjs, zod validation |
 
 ---
 
@@ -8,6 +50,7 @@
 
 - [Overview](#overview)
 - [How the System Works](#how-the-system-works)
+- [Quick Start](#quick-start)
 - [Step 1 — Generate a Licence Key (Admin Panel)](#step-1--generate-a-licence-key-admin-panel)
 - [Step 2 — API Endpoints Reference](#step-2--api-endpoints-reference)
 - [Step 3 — Integration (React / Vite / Next.js Projects)](#step-3--integration-react--vite--nextjs-projects)
@@ -24,12 +67,47 @@
 
 ## Overview
 
-SaralLicence is a centralized software licence management server. Once you generate a licence key from the admin panel, you can embed a small integration into any client project (React, Node.js, Python, PHP) to:
+**SaralLicence** is a centralized, enterprise-grade software licence management server built on the MERN stack. It allows you to protect any software — web apps, desktop apps, or server applications — behind a secure licence key system managed from a single Admin Dashboard.
+
+Once you generate a licence key from the admin panel, embed the small licensing module into any client project (React, Node.js, Python, PHP) to:
 
 - **Activate** the software on a specific machine using the licence key
-- **Validate** the licence periodically online
-- **Enforce** expiry, max activations, and feature flags
-- **Deactivate** and migrate to a new machine/server
+- **Validate** the licence periodically (online + offline grace)
+- **Enforce** expiry dates, max activations, and feature flags
+- **Remotely disable** any installation instantly from the Admin Panel
+- **Migrate** licences between machines via deactivation workflow
+
+---
+
+## Quick Start
+
+```bash
+# 1. Clone the repository
+git clone <your-repo-url>
+cd Mern_Licence
+
+# 2. Copy and configure environment
+cp .env.example .env
+# Edit .env with your MySQL credentials
+
+# 3. Install dependencies
+cd backend && npm install
+cd ../frontend && npm install
+
+# 4. Run database migrations & seed
+cd backend && npm run migrate && npm run seed
+
+# 5. Start the servers
+# Terminal 1 — Backend API (port 8000)
+cd backend && npm run dev
+
+# Terminal 2 — Frontend Dashboard (port 3000)
+cd frontend && npm run dev
+```
+
+> **Admin Panel:** http://localhost:3000 | **API Server:** http://localhost:8000
+
+> **Default Login:** `admin@saraltech.com` / `AdminPassword123!`
 
 ---
 

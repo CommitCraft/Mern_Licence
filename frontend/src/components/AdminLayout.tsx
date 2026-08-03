@@ -197,7 +197,7 @@ export const AdminLayout: React.FC = () => {
           })}
         </div>
 
-        <div className="p-4 border-t border-slate-800 bg-slate-900/40">
+        {/* <div className="p-4 border-t border-slate-800 bg-slate-900/40">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-slate-800/40 border border-slate-800 overflow-hidden">
             <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold text-xs flex-shrink-0">
               {user?.fullName ? user.fullName.charAt(0).toUpperCase() : 'A'}
@@ -207,7 +207,7 @@ export const AdminLayout: React.FC = () => {
               <p className="text-[10px] text-slate-400 truncate">{user?.roles?.[0] || 'Administrator'}</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
