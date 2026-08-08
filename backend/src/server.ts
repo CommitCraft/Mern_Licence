@@ -14,7 +14,8 @@ import { runMigrations } from './database/migrate';
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT || '8000', 10);
+const HOST = process.env.BACKEND_HOST || process.env.HOST || '0.0.0.0';
 
 // Security & Dynamic CORS Middleware for Local Dev & Production
 app.use(helmet());
@@ -77,17 +78,21 @@ async function startServer() {
     const bootTime = Date.now() - startTime;
 
     // ── Step 3: Start HTTP Server ────────────────────────────────────────
-    app.listen(PORT, () => {
+    app.listen(PORT, HOST, () => {
       const now = new Date().toLocaleString('en-IN', {
         timeZone: 'Asia/Kolkata',
         dateStyle: 'medium',
         timeStyle: 'medium',
       });
 
+      const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
+      const displayUrl = `http://${displayHost}:${PORT}`;
+
       console.log('\n╔═════════════════════════════════════════════════════╗');
       console.log('║          ✅  SERVER STARTED SUCCESSFULLY            ║');
       console.log('╠═════════════════════════════════════════════════════╣');
-      console.log(`║  📡  API URL      : http://localhost:${PORT}           ║`);
+      console.log(`║  📡  API URL      : ${displayUrl.padEnd(31)}║`);
+      console.log(`║  🌐  Bound IP     : ${HOST.padEnd(31)}║`);
       console.log(`║  🌱  Environment  : ${(process.env.NODE_ENV || 'development').padEnd(31)}║`);
       console.log(`║  🗄️  Database     : ${(process.env.DB_NAME || 'licence_system').padEnd(31)}║`);
       console.log(`║  🏠  DB Host      : ${(process.env.DB_HOST || 'localhost').padEnd(31)}║`);
