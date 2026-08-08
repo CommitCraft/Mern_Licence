@@ -8,9 +8,6 @@ import {
   Shield,
   Building2,
   FileCheck,
-  Clock,
-  AlertTriangle,
-  Ban,
   Laptop,
   FileText,
   Settings,
@@ -71,12 +68,8 @@ export const AdminLayout: React.FC = () => {
     },
     {
       groupName: 'Licence Management',
-
       items: [
         { title: 'All Licences', path: '/licences', icon: FileCheck, permission: 'VIEW_LICENCES' },
-        { title: 'Expiring Licences', path: '/licences?status=EXPIRING', icon: Clock, permission: 'VIEW_LICENCES' },
-        { title: 'Suspended Licences', path: '/licences?status=SUSPENDED', icon: AlertTriangle, permission: 'VIEW_LICENCES' },
-        { title: 'Revoked Licences', path: '/licences?status=REVOKED', icon: Ban, permission: 'VIEW_LICENCES' },
       ],
     },
 

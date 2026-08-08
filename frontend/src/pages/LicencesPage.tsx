@@ -15,6 +15,8 @@ import {
   X,
   Key,
   Edit2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 export const LicencesPage: React.FC = () => {
@@ -28,6 +30,9 @@ export const LicencesPage: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>(statusParam || 'ALL');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 20;
 
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -88,17 +93,9 @@ export const LicencesPage: React.FC = () => {
   const handleLicenceTypeChange = (newType: string, isEdit = false) => {
     const autoExpiry = calculateExpiryDate(newType);
     if (isEdit) {
-      setEditFormData((prev) => ({
-        ...prev,
-        licenceType: newType,
-        expiresAt: autoExpiry,
-      }));
+      setEditFormData((prev) => ({ ...prev, licenceType: newType, expiresAt: autoExpiry }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        licenceType: newType,
-        expiresAt: autoExpiry,
-      }));
+      setFormData((prev) => ({ ...prev, licenceType: newType, expiresAt: autoExpiry }));
     }
   };
 
@@ -145,6 +142,11 @@ export const LicencesPage: React.FC = () => {
 
   const handleCreateLicence = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.customerId || !formData.productCode) {
+      alert('Please select a customer and product');
+      return;
+    }
+
     try {
       const { data } = await api.post('/admin/licences', formData);
       if (data.success) {
@@ -225,11 +227,47 @@ export const LicencesPage: React.FC = () => {
     setTimeout(() => setCopiedRowKey(null), 2000);
   };
 
-  const filtered = licences.filter(
-    (l) =>
+  const getLicenceRowStyle = (l: any) => {
+    const isExpired = l.expires_at && new Date(l.expires_at) < new Date();
+
+    if (l.status === 'REVOKED') {
+      return 'bg-rose-100/70 hover:bg-rose-200/80 border-l-4 border-l-rose-600 text-rose-950 font-semibold';
+    }
+    if (l.status === 'SUSPENDED') {
+      return 'bg-amber-100/70 hover:bg-amber-200/80 border-l-4 border-l-amber-600 text-amber-950 font-semibold';
+    }
+    if (isExpired) {
+      return 'bg-orange-100/70 hover:bg-orange-200/80 border-l-4 border-l-orange-500 text-orange-950 font-semibold';
+    }
+    if (l.status === 'ACTIVE') {
+      return 'bg-emerald-50/70 hover:bg-emerald-100/80 border-l-4 border-l-emerald-600 text-emerald-950';
+    }
+    return 'bg-white hover:bg-gray-50 text-gray-900';
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  const filtered = licences.filter((l) => {
+    const matchesSearch =
       l.licence_reference.toLowerCase().includes(search.toLowerCase()) ||
-      l.Customer?.company_name?.toLowerCase().includes(search.toLowerCase())
-  );
+      l.Customer?.company_name?.toLowerCase().includes(search.toLowerCase());
+
+    const isExpired = l.expires_at && new Date(l.expires_at) < new Date();
+
+    let matchesStatus = true;
+    if (statusFilter === 'ACTIVE') matchesStatus = l.status === 'ACTIVE' && !isExpired;
+    else if (statusFilter === 'SUSPENDED') matchesStatus = l.status === 'SUSPENDED';
+    else if (statusFilter === 'REVOKED') matchesStatus = l.status === 'REVOKED';
+    else if (statusFilter === 'EXPIRING' || statusFilter === 'EXPIRED') matchesStatus = isExpired;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedLicences = filtered.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="space-y-4">
@@ -249,15 +287,31 @@ export const LicencesPage: React.FC = () => {
         )}
       </div>
 
-      <div className="relative max-w-md">
-        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by reference or customer company..."
-          className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-indigo-400"
-        />
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3 flex-1">
+          <div className="relative max-w-md w-full sm:w-80">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by reference or customer company..."
+              className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-indigo-400"
+            />
+          </div>
+
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:border-indigo-400 cursor-pointer shadow-2xs"
+          >
+            <option value="ALL">All Licences ({licences.length})</option>
+            <option value="ACTIVE">🟢 Active Licences</option>
+            <option value="SUSPENDED">🟠 Suspended Licences</option>
+            <option value="REVOKED">🔴 Revoked Licences</option>
+            <option value="EXPIRING">⏰ Expired / Expiring</option>
+          </select>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
@@ -265,7 +319,7 @@ export const LicencesPage: React.FC = () => {
           <table className="w-full text-left text-xs">
             <thead className="bg-gray-50/60 text-gray-500 font-semibold border-b border-gray-200 uppercase tracking-wider">
               <tr>
-                <th className="py-2.5 px-3.5">Licence Key / Reference</th>
+                <th className="py-2.5 px-3.5">Reference</th>
                 <th className="py-2.5 px-3.5">Customer</th>
                 <th className="py-2.5 px-3.5">Product / Type</th>
                 <th className="py-2.5 px-3.5">Activations</th>
@@ -283,15 +337,15 @@ export const LicencesPage: React.FC = () => {
                     Loading software licences...
                   </td>
                 </tr>
-              ) : filtered.length === 0 ? (
+              ) : paginatedLicences.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="text-center py-8 text-gray-400">
                     No software licences found.
                   </td>
                 </tr>
               ) : (
-                filtered.map((l) => (
-                  <tr key={l.id} className="hover:bg-gray-100 transition-colors">
+                paginatedLicences.map((l) => (
+                  <tr key={l.id} className={`transition-colors border-b border-gray-100 ${getLicenceRowStyle(l)}`}>
                     <td className="py-2.5 px-3.5 font-mono font-bold text-indigo-600">
                       <div className="flex items-center gap-2">
                         <Key className="w-3.5 h-3.5 text-indigo-600" />
@@ -397,6 +451,55 @@ export const LicencesPage: React.FC = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Footer */}
+        {filtered.length > 0 && (
+          <div className="px-4 py-3 bg-gray-50/80 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+            <div>
+              Showing <span className="font-semibold text-gray-900">{startIndex + 1}</span> to{' '}
+              <span className="font-semibold text-gray-900">{Math.min(startIndex + itemsPerPage, filtered.length)}</span> of{' '}
+              <span className="font-semibold text-gray-900">{filtered.length}</span> licences
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-gray-200 bg-white font-medium hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center gap-1"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-1 px-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all ${
+                        currentPage === pageNum
+                          ? 'bg-indigo-600 text-white shadow-sm'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-2.5 py-1 rounded-lg border border-gray-200 bg-white font-medium hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center gap-1"
+                >
+                  Next
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* CREATE LICENCE MODAL */}
