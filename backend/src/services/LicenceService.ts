@@ -1,10 +1,30 @@
+import { Op } from 'sequelize';
 import { Licence, Customer, LicenceActivation, LicenceAuditLog, User } from '../models';
 import { generateRandomLicenceKey, generateLicenceReference, hashSha256 } from '../utils/crypto';
 import { LoggerService } from './LoggerService';
 import { Request } from 'express';
 
 export class LicenceService {
+  public static async autoExpireLicences(): Promise<number> {
+    const [affectedCount] = await Licence.update(
+      { status: 'EXPIRED' },
+      {
+        where: {
+          status: 'ACTIVE',
+          expires_at: {
+            [Op.ne]: null,
+            [Op.lt]: new Date(),
+          },
+          deleted_at: null,
+        },
+      }
+    );
+    return affectedCount;
+  }
+
   public static async getAllLicences(statusFilter?: string) {
+    await LicenceService.autoExpireLicences();
+
     const whereClause: any = { deleted_at: null };
     if (statusFilter) {
       whereClause.status = statusFilter;

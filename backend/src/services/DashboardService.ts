@@ -1,8 +1,10 @@
 import { User, Licence, LicenceActivation, Customer, LoginAttempt, ActivityLog, LicenceAuditLog } from '../models';
 import { Op } from 'sequelize';
+import { LicenceService } from './LicenceService';
 
 export class DashboardService {
   public static async getDashboardMetrics(userPermissions: string[], userRoles: string[]) {
+    await LicenceService.autoExpireLicences();
     const isSuperAdmin = userRoles.includes('SUPER_ADMIN');
 
     const metrics: Record<string, any> = {};

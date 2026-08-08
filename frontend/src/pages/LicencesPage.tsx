@@ -228,7 +228,7 @@ export const LicencesPage: React.FC = () => {
   };
 
   const getLicenceRowStyle = (l: any) => {
-    const isExpired = l.expires_at && new Date(l.expires_at) < new Date();
+    const isExpired = l.status === 'EXPIRED' || (l.expires_at && new Date(l.expires_at) < new Date());
 
     if (l.status === 'REVOKED') {
       return 'bg-rose-100/70 hover:bg-rose-200/80 border-l-4 border-l-rose-600 text-rose-950 font-semibold';
@@ -254,7 +254,7 @@ export const LicencesPage: React.FC = () => {
       l.licence_reference.toLowerCase().includes(search.toLowerCase()) ||
       l.Customer?.company_name?.toLowerCase().includes(search.toLowerCase());
 
-    const isExpired = l.expires_at && new Date(l.expires_at) < new Date();
+    const isExpired = l.status === 'EXPIRED' || (l.expires_at && new Date(l.expires_at) < new Date());
 
     let matchesStatus = true;
     if (statusFilter === 'ACTIVE') matchesStatus = l.status === 'ACTIVE' && !isExpired;
@@ -309,7 +309,7 @@ export const LicencesPage: React.FC = () => {
             <option value="ACTIVE">🟢 Active Licences</option>
             <option value="SUSPENDED">🟠 Suspended Licences</option>
             <option value="REVOKED">🔴 Revoked Licences</option>
-            <option value="EXPIRING">⏰ Expired / Expiring</option>
+            <option value="EXPIRED">⏰ Expired Licences</option>
           </select>
         </div>
       </div>
@@ -383,14 +383,16 @@ export const LicencesPage: React.FC = () => {
                     <td className="py-2.5 px-3.5">
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                          l.status === 'ACTIVE'
+                          l.status === 'EXPIRED' || (l.expires_at && new Date(l.expires_at) < new Date())
+                            ? 'bg-orange-100 text-orange-800 border border-orange-300'
+                            : l.status === 'ACTIVE'
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : l.status === 'SUSPENDED'
                             ? 'bg-amber-50 text-amber-700 border border-amber-200'
                             : 'bg-rose-50 text-rose-700 border border-rose-200'
                         }`}
                       >
-                        {l.status}
+                        {l.status === 'ACTIVE' && l.expires_at && new Date(l.expires_at) < new Date() ? 'EXPIRED' : l.status}
                       </span>
                     </td>
                     <td className="py-2.5 px-3.5 text-right">
