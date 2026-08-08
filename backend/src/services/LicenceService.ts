@@ -6,6 +6,11 @@ import { Request } from 'express';
 
 export class LicenceService {
   public static async autoExpireLicences(): Promise<number> {
+    try {
+      const { sequelize } = require('../config/database');
+      await sequelize.query('ALTER TABLE licences ADD COLUMN licence_key VARCHAR(255) NULL AFTER customer_id;').catch(() => {});
+    } catch (e) {}
+
     const [affectedCount] = await Licence.update(
       { status: 'EXPIRED' },
       {
@@ -98,6 +103,7 @@ export class LicenceService {
 
     const licence = await Licence.create({
       customer_id: customer.id,
+      licence_key: rawLicenceKey,
       licence_code_hash: keyHash,
       licence_reference: reference,
       product_code: data.productCode || 'EMS',

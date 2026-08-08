@@ -420,7 +420,7 @@ export const LicencesPage: React.FC = () => {
                               product: l.product_code || 'EMS',
                               type: l.licence_type || 'ANNUAL',
                               activations: `${l.max_activations} Activations`,
-                              productKey: l.licence_reference,
+                              productKey: l.licence_key || l.licence_reference,
                               created: new Date(l.issued_at || l.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
                               expiry: l.expires_at ? new Date(l.expires_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Lifetime',
                               validity: l.licence_type === 'ANNUAL' ? '1 Year' : l.licence_type === 'TRIAL' ? '30 Days' : l.licence_type === 'ENTERPRISE' ? '3 Years' : 'Lifetime',

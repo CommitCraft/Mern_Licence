@@ -369,6 +369,7 @@ Customer.init(
 export class Licence extends Model {
   declare public id: number;
   declare public customer_id: number;
+  declare public licence_key: string | null;
   declare public licence_code_hash: string;
   declare public licence_reference: string;
   declare public product_code: string;
@@ -396,6 +397,7 @@ Licence.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
     customer_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false },
+    licence_key: { type: DataTypes.STRING(255), allowNull: true },
     licence_code_hash: { type: DataTypes.STRING(64), allowNull: false, unique: true },
     licence_reference: { type: DataTypes.STRING(50), allowNull: false, unique: true },
     product_code: { type: DataTypes.STRING(50), allowNull: false },
