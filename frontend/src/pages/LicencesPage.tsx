@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { api } from '../config/api';
 import { useAuth } from '../context/AuthContext';
+import LicenseCertificate from '../components/LicenseCertificate';
 import {
   Plus,
   Search,
@@ -17,6 +18,7 @@ import {
   Edit2,
   ChevronLeft,
   ChevronRight,
+  Award,
 } from 'lucide-react';
 
 export const LicencesPage: React.FC = () => {
@@ -34,15 +36,16 @@ export const LicencesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 20;
 
-
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
   const [keyOutputModalOpen, setKeyOutputModalOpen] = useState(false);
+  const [certificateModalData, setCertificateModalData] = useState<any | null>(null);
 
   const [selectedLicence, setSelectedLicence] = useState<any>(null);
   const [editingLicence, setEditingLicence] = useState<any>(null);
   const [createdKeyData, setCreatedKeyData] = useState<{ rawLicenceKey: string; warning: string } | null>(null);
+  const [createdCertificateProps, setCreatedCertificateProps] = useState<any | null>(null);
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedRowKey, setCopiedRowKey] = useState<string | null>(null);
   const [newExpiryDate, setNewExpiryDate] = useState('');
@@ -155,6 +158,19 @@ export const LicencesPage: React.FC = () => {
           rawLicenceKey: data.rawLicenceKey,
           warning: data.warning,
         });
+
+        const selectedCust = customers.find((c) => String(c.id) === String(formData.customerId));
+        setCreatedCertificateProps({
+          customer: selectedCust?.company_name || selectedCust?.customer_name || 'Valued Customer',
+          product: formData.productCode,
+          type: formData.licenceType,
+          activations: `${formData.maxActivations} Activations`,
+          productKey: data.rawLicenceKey,
+          created: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          expiry: formData.expiresAt ? new Date(formData.expiresAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Lifetime',
+          validity: formData.licenceType === 'ANNUAL' ? '1 Year' : formData.licenceType === 'TRIAL' ? '30 Days' : formData.licenceType === 'ENTERPRISE' ? '3 Years' : 'Lifetime',
+        });
+
         setKeyOutputModalOpen(true);
         fetchLicences();
       }
@@ -397,6 +413,24 @@ export const LicencesPage: React.FC = () => {
                     </td>
                     <td className="py-2.5 px-3.5 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => {
+                            setCertificateModalData({
+                              customer: l.Customer?.company_name || l.Customer?.customer_name || 'Valued Customer',
+                              product: l.product_code || 'EMS',
+                              type: l.licence_type || 'ANNUAL',
+                              activations: `${l.max_activations} Activations`,
+                              productKey: l.licence_reference,
+                              created: new Date(l.issued_at || l.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                              expiry: l.expires_at ? new Date(l.expires_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Lifetime',
+                              validity: l.licence_type === 'ANNUAL' ? '1 Year' : l.licence_type === 'TRIAL' ? '30 Days' : l.licence_type === 'ENTERPRISE' ? '3 Years' : 'Lifetime',
+                            });
+                          }}
+                          title="View & Download License Certificate"
+                          className="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/80 transition-all shadow-2xs"
+                        >
+                          <Award className="w-3.5 h-3.5" />
+                        </button>
                         {hasPermission('UPDATE_LICENCE') && (
                           <button
                             onClick={() => handleOpenEditModal(l)}
@@ -515,7 +549,7 @@ export const LicencesPage: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleCreateLicence} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateLicence} className="space-y-3 text-xs">
               <div>
                 <label className="block text-gray-500 mb-1">Customer *</label>
                 <select
@@ -751,12 +785,27 @@ export const LicencesPage: React.FC = () => {
               </div>
             </div>
 
-            <button
-              onClick={() => setKeyOutputModalOpen(false)}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl text-xs"
-            >
-              I Have Saved This Licence Key Safely
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  setKeyOutputModalOpen(false);
+                  if (createdCertificateProps) {
+                    setCertificateModalData(createdCertificateProps);
+                  }
+                }}
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-amber-200"
+              >
+                <Award className="w-4 h-4" />
+                View & Download License Certificate
+              </button>
+
+              <button
+                onClick={() => setKeyOutputModalOpen(false)}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-xs"
+              >
+                I Have Saved This Licence Key Safely
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -796,6 +845,20 @@ export const LicencesPage: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {certificateModalData && (
+        <LicenseCertificate
+          customer={certificateModalData.customer}
+          product={certificateModalData.product}
+          type={certificateModalData.type}
+          activations={certificateModalData.activations}
+          productKey={certificateModalData.productKey}
+          created={certificateModalData.created}
+          expiry={certificateModalData.expiry}
+          validity={certificateModalData.validity}
+          onClose={() => setCertificateModalData(null)}
+        />
       )}
     </div>
   );
