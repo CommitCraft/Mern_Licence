@@ -47,7 +47,6 @@ export const LicencesPage: React.FC = () => {
   const [createdKeyData, setCreatedKeyData] = useState<{ rawLicenceKey: string; warning: string } | null>(null);
   const [createdCertificateProps, setCreatedCertificateProps] = useState<any | null>(null);
   const [copiedKey, setCopiedKey] = useState(false);
-  const [copiedRowKey, setCopiedRowKey] = useState<string | null>(null);
   const [newExpiryDate, setNewExpiryDate] = useState('');
 
   const calculateExpiryDate = (type: string): string => {
@@ -237,12 +236,6 @@ export const LicencesPage: React.FC = () => {
     setTimeout(() => setCopiedKey(false), 2000);
   };
 
-  const copyRowKey = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedRowKey(text);
-    setTimeout(() => setCopiedRowKey(null), 2000);
-  };
-
   const getLicenceRowStyle = (l: any) => {
     const isExpired = l.status === 'EXPIRED' || (l.expires_at && new Date(l.expires_at) < new Date());
 
@@ -366,17 +359,6 @@ export const LicencesPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <Key className="w-3.5 h-3.5 text-indigo-600" />
                         <span>{l.licence_reference}</span>
-                        <button
-                          onClick={() => copyRowKey(l.licence_reference)}
-                          title="Copy Licence Reference"
-                          className="p-1 hover:bg-gray-100 rounded text-gray-500 hover:text-gray-800"
-                        >
-                          {copiedRowKey === l.licence_reference ? (
-                            <Check className="w-3 h-3 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3 h-3" />
-                          )}
-                        </button>
                       </div>
                     </td>
                     <td className="py-2.5 px-3.5 font-medium text-gray-800">{l.Customer?.company_name || '—'}</td>
@@ -413,24 +395,6 @@ export const LicencesPage: React.FC = () => {
                     </td>
                     <td className="py-2.5 px-3.5 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => {
-                            setCertificateModalData({
-                              customer: l.Customer?.company_name || l.Customer?.customer_name || 'Valued Customer',
-                              product: l.product_code || 'EMS',
-                              type: l.licence_type || 'ANNUAL',
-                              activations: `${l.max_activations} Activations`,
-                              productKey: l.licence_key || l.licence_reference,
-                              created: new Date(l.issued_at || l.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                              expiry: l.expires_at ? new Date(l.expires_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Lifetime',
-                              validity: l.licence_type === 'ANNUAL' ? '1 Year' : l.licence_type === 'TRIAL' ? '30 Days' : l.licence_type === 'ENTERPRISE' ? '3 Years' : 'Lifetime',
-                            });
-                          }}
-                          title="View & Download License Certificate"
-                          className="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/80 transition-all shadow-2xs"
-                        >
-                          <Award className="w-3.5 h-3.5" />
-                        </button>
                         {hasPermission('UPDATE_LICENCE') && (
                           <button
                             onClick={() => handleOpenEditModal(l)}
