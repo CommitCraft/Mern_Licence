@@ -1,6 +1,6 @@
-# 📖 Client Integration Guide — SaralLicence API
+# 📖 Client Integration Guide — Aplos Logix API
 
-Complete Developer Guide & User Manual for integrating the **SaralLicence Key Control & Validation API** into any client application (React, Node.js, Next.js, Python, PHP, C#, cURL).
+Complete Developer Guide & User Manual for integrating the **Aplos Logix Key Control & Validation API** into any client application (React, Node.js, Next.js, Python, PHP, C#, cURL).
 
 ---
 
@@ -24,17 +24,17 @@ Complete Developer Guide & User Manual for integrating the **SaralLicence Key Co
 
 ## 1. Overview & Architecture
 
-SaralLicence operates on a **Client-Server Licensing Model**:
+Aplos Logix operates on a **Client-Server Licensing Model**:
 
 ```
  ┌──────────────────────────────┐
- │   SaralLicence Admin Panel   │
+ │   Aplos Logix Admin Panel    │
  │   http://localhost:3000      │
  └──────────────┬───────────────┘
                 │ 1. Admin generates Licence Key
                 ▼
  ┌──────────────────────────────┐          REST API Call           ┌──────────────────────────────┐
- │   SaralLicence API Server    │ ◄─────────────────────────────── │    Your Client Software      │
+ │   Aplos Logix API Server     │ ◄─────────────────────────────── │    Your Client Software      │
  │   http://localhost:8000/api  │   /api/v1/licences/activate    │   (React / Node / Python)    │
  └──────────────────────────────┘   /api/v1/licences/validate     └──────────────────────────────┘
                                     /api/v1/licences/deactivate
@@ -52,7 +52,7 @@ SaralLicence operates on a **Client-Server Licensing Model**:
 ### Step 2.1 — Access Admin Panel
 1. Open Admin Dashboard: `http://localhost:3000/login`
 2. Login with Admin credentials:
-   - **Email/Username**: `admin@saraltech.com` or `admin`
+   - **Email/Username**: `admin@aploslogix.com` or `admin`
    - **Password**: `AdminPassword123!`
 
 ### Step 2.2 — Add Customer
@@ -516,4 +516,4 @@ public class LicenceClient
 
 ---
 
-*SaralLicence — Enterprise Software Licence Management API*
+*Aplos Logix — Enterprise Software Licence Management API*

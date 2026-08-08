@@ -1,4 +1,4 @@
-# 🔐 SaralLicence — Software Licence Management System
+# 🔐 Aplos Logix — Software Licence Management System
 
 <div align="center">
 
@@ -68,7 +68,7 @@
 
 ## Overview
 
-**SaralLicence** is a centralized, enterprise-grade software licence management server built on the MERN stack. It allows you to protect any software — web apps, desktop apps, or server applications — behind a secure licence key system managed from a single Admin Dashboard.
+**Aplos Logix** is a centralized, enterprise-grade software licence management server built on the MERN stack. It allows you to protect any software — web apps, desktop apps, or server applications — behind a secure licence key system managed from a single Admin Dashboard.
 
 Once you generate a licence key from the admin panel, embed the small licensing module into any client project (React, Node.js, Python, PHP) to:
 
@@ -108,7 +108,7 @@ cd frontend && npm run dev
 
 > **Admin Panel:** http://localhost:3000 | **API Server:** http://localhost:8000
 
-> **Default Login:** `admin@saraltech.com` / `AdminPassword123!`
+> **Default Login:** `admin@aploslogix.com` / `AdminPassword123!`
 
 ---
 
@@ -117,7 +117,7 @@ cd frontend && npm run dev
 ```
 ┌────────────────────┐         ┌──────────────────────────┐
 │  Admin Panel       │         │  Licence Server (API)    │
-│  (SaralLicence)    │────────▶│  http://localhost:8000   │
+│  (Aplos Logix)     │────────▶│  http://localhost:8000   │
 │                    │ Generate│  /api/licences/activate  │
 │  Customer + Product│ Key     │  /api/licences/validate  │
 │  → Licence Key 🔑  │         │  /api/licences/deactivate│
@@ -138,8 +138,8 @@ cd frontend && npm run dev
 
 ## Step 1 — Generate a Licence Key (Admin Panel)
 
-1. Login to the **SaralLicence Admin Panel** at `http://localhost:5173`
-   - **Username**: `admin` or `admin@saraltech.com`
+1. Login to the **Aplos Logix Admin Panel** at `http://localhost:5173`
+   - **Username**: `admin` or `admin@aploslogix.com`
    - **Password**: `AdminPassword123!`
 
 2. Go to **Customer Directory** → Add a Customer (if not added)
@@ -782,7 +782,7 @@ Or from Admin Panel: **Active Installations** → Click **"Deactivate"** on the 
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `LICENCE_SERVER_URL` | URL of the SaralLicence API server | `http://localhost:8000/api` |
+| `LICENCE_SERVER_URL` | URL of the Aplos Logix API server | `http://localhost:8000/api` |
 | `PRODUCT_CODE` | Your product code (must match admin panel) | `EMS` |
 | `APP_VERSION` | Your application version | `1.0.0` |
 | `LICENCE_OFFLINE_GRACE_DAYS` | Days allowed offline (set per licence in admin) | `7` |
@@ -805,12 +805,13 @@ Or from Admin Panel: **Active Installations** → Click **"Deactivate"** on the 
 - Or deactivate old installations from the **Active Installations** page
 
 ### ❌ "Licence validation failed" on startup
-- Confirm `LICENCE_SERVER_URL` points to the running SaralLicence server
+- Confirm `LICENCE_SERVER_URL` points to the running Aplos Logix server
+- Make sure backend was seeded (`npm run seed`)
 - Ensure port `8000` is accessible from the client machine (firewall rules)
 - Check server status: `curl http://localhost:8000/api/auth/setup-status`
 
 ### ❌ 401 Unauthorized on Admin Panel
-- Username: `admin` or `admin@saraltech.com`
+- Username: `admin` or `admin@aploslogix.com`
 - Password: `AdminPassword123!`
 
 ---
@@ -858,8 +859,8 @@ curl -X POST http://localhost:8000/api/licences/deactivate \
 - 🌐 In production, always use **HTTPS** for the licence server (`https://your-domain.com/api`)
 - 🖥️ For **Electron desktop apps**, use OS-level keychain to store the activation data
 - 🔄 Set up **periodic validation** (every 24 hours) to detect licence expiry promptly
-- 📋 Log all activation attempts server-side (already built into SaralLicence audit logs)
+- 📋 Log all activation attempts server-side (already built into Aplos Logix audit logs)
 
 ---
 
-*SaralLicence — Enterprise Software Licence Management System by SaralTech*
+*Aplos Logix — Enterprise Software Licence Management System*

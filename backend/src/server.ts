@@ -62,7 +62,7 @@ async function startServer() {
 
     // ── Step 1: Run Migrations ──────────────────────────────────────────
     console.log('\n┌─────────────────────────────────────────────────────┐');
-    console.log('│           SaralLicence  —  Backend API Server       │');
+    console.log('│           Aplos Logix   —  Backend API Server       │');
     console.log('└─────────────────────────────────────────────────────┘\n');
 
     process.stdout.write('  🔄  Running database migrations...       ');

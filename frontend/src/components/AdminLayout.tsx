@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import AplosLogo from './AplosLogo';
 import {
   LayoutDashboard,
   Users,
@@ -22,7 +23,6 @@ import {
   Bell,
   Search,
 } from 'lucide-react';
-
 
 interface MenuItem {
   title: string;
@@ -138,19 +138,9 @@ export const AdminLayout: React.FC = () => {
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="h-14 px-4 flex items-center justify-between border-b border-gray-200 bg-white">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20">
-              <Shield className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-bold text-sm tracking-wide text-gray-900">
-                SaralLicence
-              </span>
-              <span className="block text-[9px] text-indigo-600 font-semibold uppercase tracking-wider">
-                Enterprise Admin
-              </span>
-            </div>
+        <div className="h-14 px-3 flex items-center justify-between border-b border-gray-200 bg-white">
+          <div className="flex items-center gap-2">
+            <AplosLogo size="sm" showTagline={true} text="APLÓS" />
           </div>
           <button
             className="lg:hidden text-gray-500 hover:text-gray-700"

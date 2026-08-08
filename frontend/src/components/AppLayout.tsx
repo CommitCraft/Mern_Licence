@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Cpu, Shield, Settings, LogOut, Zap, Wrench } from 'lucide-react';
 import { useLicence } from '../modules/licensing/hooks/useLicence';
+import AplosLogo from './AplosLogo';
 
 export const AppLayout: React.FC = () => {
   const { valid, features, licence } = useLicence();
@@ -25,22 +26,8 @@ export const AppLayout: React.FC = () => {
     <div className="app-container">
       {/* Sidebar Navigation */}
       <aside className="sidebar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2.5rem' }}>
-          <div style={{
-            width: '38px',
-            height: '38px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Shield size={22} color="#ffffff" />
-          </div>
-          <div>
-            <h3 style={{ fontSize: '1.1rem', lineHeight: 1.2 }}>EMS-PRO</h3>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>Licensed Platform</p>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2.5rem', justifyContent: 'center' }}>
+          <AplosLogo size="sm" light={true} showTagline={false} text="APLÓS LOGIX" />
         </div>
 
         <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

@@ -186,7 +186,7 @@ export async function runSeeds() {
 
     console.log('Seeding application default settings...');
     const defaultSettings = [
-      { setting_key: 'COMPANY_NAME', setting_value: 'Saral Tech', category: 'COMPANY' },
+      { setting_key: 'COMPANY_NAME', setting_value: 'Aplos Logix', category: 'COMPANY' },
       { setting_key: 'PRODUCT_NAME', setting_value: 'Enterprise Licence Management System', category: 'PRODUCT' },
       { setting_key: 'PRODUCT_CODE', setting_value: 'EMS', category: 'PRODUCT' },
       { setting_key: 'PASSWORD_MIN_LENGTH', setting_value: '8', category: 'SECURITY' },
@@ -211,7 +211,7 @@ export async function runSeeds() {
     // ------------------------------------------------------------------
     const superAdminName = process.env.SUPERADMIN_FULL_NAME || 'Super Admin';
     const superAdminUsername = process.env.SUPERADMIN_USERNAME || 'admin';
-    const superAdminEmail = process.env.SUPERADMIN_EMAIL || 'admin@saraltech.com';
+    const superAdminEmail = process.env.SUPERADMIN_EMAIL || 'admin@aploslogix.com';
     const superAdminPlainPassword = process.env.SUPERADMIN_PASSWORD || 'AdminPassword123!';
 
     console.log(`Seeding SuperAdmin user (${superAdminUsername} / ${superAdminEmail})...`);

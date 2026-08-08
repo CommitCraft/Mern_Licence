@@ -1,8 +1,9 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../config/api';
-import { Shield, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import AplosLogo from '../components/AplosLogo';
+import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -43,10 +44,10 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
         <div className="p-8 border-b border-gray-100 text-center bg-gradient-to-br from-indigo-50 to-white">
-          <div className="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/25">
-            <Shield className="w-8 h-8" />
+          <div className="flex justify-center mb-3">
+            <AplosLogo size="lg" showTagline={true} text="APLÓS LOGIX" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Portal Sign In</h1>
+          <h1 className="text-xl font-bold text-gray-900 tracking-tight mt-2">Portal Sign In</h1>
           <p className="text-xs text-gray-500 mt-1">
             Software Licence & User Administration Platform
           </p>
